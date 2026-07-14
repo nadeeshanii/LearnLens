@@ -154,13 +154,37 @@ const Prediction = () => {
           {result ? (
             <div className="space-y-4">
               <div className="rounded-2xl bg-slate-50 p-4">
-                <p className="text-slate-500">Predicted Grade</p>
-                <p className="text-3xl font-bold text-indigo-600">{result.grade}</p>
-              </div>
+                <div className="grid grid-cols-2 items-center gap-4">
+                  <div>
+                    <p className="text-slate-500">Predicted Grade</p>
+                    <p className="text-3xl font-bold text-indigo-600">{result.grade}</p>
+                  </div>
 
-              <div className="rounded-2xl bg-slate-50 p-4">
-                <p className="text-slate-500">Performance Level</p>
-                <p className="font-semibold text-emerald-600">{result.level}</p>
+                  <div className="flex items-center justify-end gap-3">
+                    {result.level === "Excellent Performance" ? (
+                      <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-emerald-50 text-2xl">✅</span>
+                    ) : result.level === "Good Performance" ? (
+                      <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-yellow-50 text-2xl">🟡</span>
+                    ) : (
+                      <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-rose-50 text-2xl">❌</span>
+                    )}
+
+                    <div className="text-right">
+                      <p className="text-slate-500">Performance Level</p>
+                      <p
+                        className={
+                          result.level === "Excellent Performance"
+                            ? "font-semibold text-emerald-700"
+                            : result.level === "Good Performance"
+                              ? "font-semibold text-yellow-700"
+                              : "font-semibold text-rose-700"
+                        }
+                      >
+                        {result.level}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div className="rounded-2xl bg-slate-50 p-4">

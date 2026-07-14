@@ -1,7 +1,9 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import Card from "../components/Card";
 import Button from "../components/Button";
+
 
 const emptyStudent = {
   name: "",
@@ -12,29 +14,30 @@ const emptyStudent = {
 
 const Students = () => {
   const navigate = useNavigate();
-  const [students, setStudents] = useState([
-    {
-      id: 1,
-      name: "Kasun Perera",
-      attendance: "90",
-      studyHours: "5",
-      grade: "85",
-    },
-    {
-      id: 2,
-      name: "Nimal Silva",
-      attendance: "65",
-      studyHours: "2",
-      grade: "55",
-    },
-    {
-      id: 3,
-      name: "Amali Fernando",
-      attendance: "95",
-      studyHours: "6",
-      grade: "92",
-    },
-  ]);
+  const [students, setStudents] = useState([]);
+
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/students");
+        // backend returns Mongo docs with _id; map to id
+        setStudents(
+          (res.data ?? []).map((s) => ({
+            id: s._id ?? s.id,
+            name: s.name,
+            attendance: String(s.attendance ?? ""),
+            studyHours: String(s.studyHours ?? ""),
+            grade: String(s.assignmentScore ?? s.grade ?? ""),
+          })),
+        );
+      } catch (e) {
+        // fallback: keep empty list
+        console.error("Failed to load students", e);
+      }
+    };
+
+    fetchStudents();
+  }, []);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState(emptyStudent);
@@ -67,56 +70,72 @@ const Students = () => {
     setFormData(emptyStudent);
   };
 
-  const handleSaveStudent = (event, action = "save") => {
+  const handleSaveStudent = async (event, action = "save") => {
     event.preventDefault();
 
-    if (!formData.name.trim()) {
-      return;
-    }
+    const name = formData.name.trim();
+    const attendance = Number(formData.attendance);
+    const studyHours = Number(formData.studyHours);
+    const assignmentScore = Number(formData.grade);
 
-    const normalizedStudent = {
-      name: formData.name.trim(),
-      attendance: formData.attendance,
-      studyHours: formData.studyHours,
-      grade: formData.grade,
+    if (!name) return;
+
+    const payload = {
+      name,
+      attendance,
+      studyHours,
+      assignmentScore,
+      previousGrade: assignmentScore,
     };
 
-    let savedStudent;
+    try {
+      if (editingStudent) {
+        const res = await axios.put(
+          `http://localhost:5000/api/students/${editingStudent.id}`,
+          payload,
+        );
+        setStudents((cur) =>
+          cur.map((s) => (s.id === editingStudent.id ? mapStudent(res.data) : s)),
+        );
 
-    if (editingStudent) {
-      savedStudent = {
-        ...editingStudent,
-        ...normalizedStudent,
-      };
+        if (action === "predict") {
+          navigate("/prediction", { state: { student: { ...mapStudent(res.data) } } });
+        }
+      } else {
+        const res = await axios.post(
+          "http://localhost:5000/api/students",
+          payload,
+        );
+        const created = mapStudent(res.data);
+        setStudents((cur) => [...cur, created]);
 
-      setStudents((currentStudents) =>
-        currentStudents.map((student) =>
-          student.id === editingStudent.id ? savedStudent : student,
-        ),
-      );
-    } else {
-      savedStudent = {
-        id: Date.now(),
-        ...normalizedStudent,
-      };
-
-      setStudents((currentStudents) => [
-        ...currentStudents,
-        savedStudent,
-      ]);
-    }
-
-    closeModal();
-
-    if (action === "predict") {
-      navigate("/prediction", { state: { student: savedStudent } });
+        if (action === "predict") {
+          navigate("/prediction", { state: { student: created } });
+        }
+      }
+    } catch (e) {
+      console.error("Save failed", e);
+      return;
+    } finally {
+      closeModal();
     }
   };
 
-  const handleDeleteStudent = (studentId) => {
-    setStudents((currentStudents) =>
-      currentStudents.filter((student) => student.id !== studentId),
-    );
+  const mapStudent = (doc) => ({
+    id: doc._id ?? doc.id,
+    name: doc.name,
+    attendance: String(doc.attendance ?? ""),
+    studyHours: String(doc.studyHours ?? ""),
+    grade: String(doc.assignmentScore ?? doc.grade ?? ""),
+  });
+
+  const handleDeleteStudent = async (studentId) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/students/${studentId}`);
+      setStudents((cur) => cur.filter((s) => s.id !== studentId));
+    } catch (e) {
+      console.error("Delete failed", e);
+    }
   };
 
   const handlePredictStudent = (student) => {
@@ -166,7 +185,20 @@ const Students = () => {
                   <td className="py-4 font-medium text-slate-900">{student.name}</td>
                   <td>{student.attendance}%</td>
                   <td>{student.studyHours} hrs</td>
-                  <td>{student.grade}%</td>
+                  <td className="whitespace-nowrap">
+                    <div className="flex items-center gap-2">
+                      <span className="inline-flex h-7 w-7 items-center justify-center rounded-full text-base">
+                        {Number(student.grade) >= 80 ? (
+                          <span className="bg-emerald-50 text-emerald-700">✅</span>
+                        ) : Number(student.grade) >= 65 ? (
+                          <span className="bg-yellow-50 text-yellow-700">🟡</span>
+                        ) : (
+                          <span className="bg-rose-50 text-rose-700">❌</span>
+                        )}
+                      </span>
+                      <span>{student.grade}%</span>
+                    </div>
+                  </td>
                   <td>
                     <div className="flex flex-wrap gap-2">
                       <Button
@@ -218,13 +250,59 @@ const Students = () => {
             </div>
 
             <form className="grid gap-4" onSubmit={(event) => handleSaveStudent(event, "save")}>
-              <input
-                type="text"
-                placeholder="Student name"
-                value={formData.name}
-                onChange={(event) => setFormData({ ...formData, name: event.target.value })}
-                className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
-              />
+              <div className="grid gap-4 sm:grid-cols-2">
+
+                <div className="grid gap-4">
+                  <div>
+                    <p className="mb-1 text-sm font-medium text-slate-600">Student name</p>
+                  </div>
+                  <div>
+                    <p className="mb-1 text-sm font-medium text-slate-600">Attendance</p>
+                    <p className="text-xs text-slate-500">( % )</p>
+                  </div>
+                  <div>
+                    <p className="mb-1 text-sm font-medium text-slate-600">Study hours</p>
+                  </div>
+                  <div>
+                    <p className="mb-1 text-sm font-medium text-slate-600">Assignment score</p>
+                    <p className="text-xs text-slate-500">( % )</p>
+                  </div>
+                </div>
+
+                <div className="grid gap-4">
+                  <input
+                    type="text"
+                    placeholder="Student name"
+                    value={formData.name}
+                    onChange={(event) => setFormData({ ...formData, name: event.target.value })}
+                    className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+                  />
+
+                  <input
+                    type="number"
+                    placeholder="Attendance - 96"
+                    value={formData.attendance}
+                    onChange={(event) => setFormData({ ...formData, attendance: event.target.value })}
+                    className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+                  />
+
+                  <input
+                    type="number"
+                    placeholder="Study hour - 6"
+                    value={formData.studyHours}
+                    onChange={(event) => setFormData({ ...formData, studyHours: event.target.value })}
+                    className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+                  />
+
+                  <input
+                    type="number"
+                    placeholder="Assignment score - 92"
+                    value={formData.grade}
+                    onChange={(event) => setFormData({ ...formData, grade: event.target.value })}
+                    className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+                  />
+                </div>
+              </div>
 
               <div className="grid gap-4 sm:grid-cols-3">
                 <input
