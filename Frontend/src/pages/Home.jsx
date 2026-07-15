@@ -1,174 +1,196 @@
-import Navbar from "../components/Navbar";
-import Card from "../components/Card";
-import Button from "../components/Button";
-import FooterBar from "../components/FooterBar";
+import {
+  BarChart2,
+  Cpu,
+  LineChart,
+  Zap,
+  UserPlus,
+  Search,
+  CheckCircle,
+  ShieldAlert,
+  Lightbulb,
+  Layers,
+  Smile,
+} from 'lucide-react';
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(59,130,246,0.16),_transparent_28%),radial-gradient(circle_at_top_right,_rgba(34,211,238,0.16),_transparent_24%),linear-gradient(180deg,_#f9fbff_0%,_#eef6ff_45%,_#f8fafc_100%)]">
-      <Navbar />
-
-      <section className="mx-auto grid max-w-7xl gap-8 px-5 py-10 sm:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:py-14">
-        <div className="space-y-7">
-          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-200 bg-white/80 px-4 py-2 text-sm font-medium text-slate-600 shadow-sm backdrop-blur">
-            <span className="h-2 w-2 rounded-full bg-cyan-500" />
-            Friendly AI for student support and early action
-          </div>
-
-          <h1 className="max-w-2xl text-5xl font-black tracking-tight text-slate-900 sm:text-6xl">
-            A happier way to
-            <span className="block bg-gradient-to-r from-indigo-600 via-sky-500 to-cyan-500 bg-clip-text text-transparent">
-              understand every student
-            </span>
-          </h1>
-
-          <p className="max-w-xl text-lg leading-8 text-slate-600 sm:text-xl">
-            Learn Lens helps teachers see who needs help early, predict performance with confidence, and give students support before they fall behind.
-          </p>
-
-          <div className="flex flex-wrap gap-4">
-            <Button text="Open Dashboard" to="/dashboard" />
-            <Button text="Sign In" to="/login" variant="secondary" />
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-3">
-            <Card className="p-4">
-              <p className="text-sm font-medium text-slate-500">Students tracked</p>
-              <p className="mt-2 text-2xl font-bold text-indigo-600">120+</p>
-            </Card>
-            <Card className="p-4">
-              <p className="text-sm font-medium text-slate-500">Prediction confidence</p>
-              <p className="mt-2 text-2xl font-bold text-sky-600">94%</p>
-            </Card>
-            <Card className="p-4">
-              <p className="text-sm font-medium text-slate-500">Early support alerts</p>
-              <p className="mt-2 text-2xl font-bold text-emerald-600">12</p>
-            </Card>
-          </div>
-        </div>
-
-        <div className="relative">
-          <div className="absolute -left-6 -top-6 h-28 w-28 rounded-full bg-cyan-300/25 blur-2xl" />
-          <div className="absolute -bottom-8 right-0 h-36 w-36 rounded-full bg-indigo-400/20 blur-3xl" />
-
-          <Card className="overflow-hidden border border-white/70 bg-white/90 p-0 shadow-2xl shadow-slate-200/70 backdrop-blur">
-            <div className="bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 p-6 text-white sm:p-8">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.3em] text-cyan-200">AI assistant</p>
-                  <h2 className="mt-2 text-2xl font-semibold">Student insight board</h2>
-                </div>
-                <div className="rounded-full bg-emerald-400/15 px-3 py-1 text-sm font-medium text-emerald-300">
-                  Live
-                </div>
+    <div className="min-h-screen bg-[#EEF6FF] font-sans text-[#1E293B] antialiased">
+      <nav className="sticky top-0 z-50 border-b border-[#C7DAF7] bg-[#F8FBFF]/95 backdrop-blur-md">
+          <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+            <div className="flex items-center gap-2">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#4F46E5] text-white shadow-md shadow-[#4F46E5]/20">
+                <Smile className="h-6 w-6 transform rotate-12" />
               </div>
+              <span className="text-xl font-black tracking-tight text-[#1E293B]">
+                Learn<span className="text-[#4F46E5]">Lens</span>
+              </span>
+            </div>
 
-              <div className="mt-6 rounded-[1.75rem] bg-white/6 p-5 ring-1 ring-white/10 sm:p-6">
-                <div className="flex items-center gap-4">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 text-3xl">
-                    🤖
-                  </div>
-                  <div>
-                    <p className="text-sm text-slate-300">Personalized support</p>
-                    <p className="mt-1 text-lg font-semibold">Clear signals, calmer teaching</p>
-                  </div>
-                </div>
+            <div className="flex items-center gap-8">
+              <a href="#features" className="hidden text-sm font-bold text-[#6366F1] transition-colors hover:text-[#4F46E5] md:block">Home</a>
+              <a href="/login" className="text-sm font-bold text-[#1E293B] transition-colors hover:text-[#4F46E5]">Login</a>
+              <button className="rounded-full bg-[#4F46E5] px-6 py-2.5 text-sm font-bold text-white shadow-lg shadow-[#4F46E5]/20 transition-all hover:scale-105 hover:bg-[#6366F1] active:scale-95">
+                Get Started
+              </button>
+            </div>
+          </div>
+        </nav>
 
-                <div className="mt-6 space-y-4">
-                  <div>
-                    <div className="mb-2 flex items-center justify-between text-sm text-slate-300">
-                      <span>Attendance</span>
-                      <span>90%</span>
-                    </div>
-                    <div className="h-2 overflow-hidden rounded-full bg-white/10">
-                      <div className="h-full w-[90%] rounded-full bg-gradient-to-r from-cyan-400 to-indigo-400" />
-                    </div>
-                  </div>
+        <header className="relative mx-auto max-w-7xl px-6 py-10 md:py-16">
+          <div className="grid gap-12 md:grid-cols-2 md:items-center">
+            <div className="space-y-6 text-center md:text-left">
+              <div className="inline-flex items-center gap-2 rounded-full bg-[#10B981]/10 px-4 py-1.5 text-xs font-black uppercase tracking-wider text-[#10B981]">
+                ✨ Level Up Your Learning
+              </div>
+              <h1 className="text-4xl font-black tracking-tight text-[#1E293B] sm:text-5xl md:text-6xl lg:leading-tight">
+                AI-Powered Student <br />
+                <span className="bg-gradient-to-r from-[#4F46E5] to-[#6366F1] bg-clip-text text-transparent">
+                  Performance Prediction
+                </span>
+              </h1>
+              <p className="max-w-xl text-base leading-relaxed text-[#6366F1]/90 sm:text-lg">
+                Unlock your academic superpowers! Our friendly AI analyzes learning patterns to help students and educators predict outcomes and smash study goals before deadlines sneak up.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4 md:justify-start">
+                <button className="rounded-full bg-[#4F46E5] px-8 py-3.5 text-base font-bold text-white shadow-xl shadow-[#4F46E5]/20 transition-all hover:scale-105 hover:bg-[#6366F1] active:scale-95">
+                  Get Started
+                </button>
+                <button className="rounded-full border-2 border-[#C7DAF7] bg-[#F8FBFF] px-8 py-3.5 text-base font-bold text-[#1E293B] shadow-sm transition-all hover:border-[#4F46E5]/30 hover:bg-[#EDF4FF]">
+                  Learn More
+                </button>
+              </div>
+            </div>
 
-                  <div>
-                    <div className="mb-2 flex items-center justify-between text-sm text-slate-300">
-                      <span>Study consistency</span>
-                      <span>78%</span>
-                    </div>
-                    <div className="h-2 overflow-hidden rounded-full bg-white/10">
-                      <div className="h-full w-[78%] rounded-full bg-gradient-to-r from-emerald-400 to-cyan-400" />
-                    </div>
+            <div className="flex justify-center">
+              <div className="relative flex h-80 w-80 items-center justify-center rounded-full bg-gradient-to-tr from-[#4F46E5]/10 to-[#6366F1]/20 p-8 sm:h-96 sm:w-96">
+                <div className="flex h-full w-full flex-col items-center justify-center rounded-full border-4 border-dashed border-[#8CB7F5]/40 bg-[#F7FAFF] p-6 text-center shadow-2xl">
+                  <div className="animate-bounce rounded-2xl bg-[#10B981] p-4 text-white shadow-lg">
+                    <Cpu className="h-12 w-12" />
                   </div>
-
-                  <div>
-                    <div className="mb-2 flex items-center justify-between text-sm text-slate-300">
-                      <span>Support need</span>
-                      <span>Low</span>
-                    </div>
-                    <div className="h-2 overflow-hidden rounded-full bg-white/10">
-                      <div className="h-full w-[32%] rounded-full bg-gradient-to-r from-amber-300 to-rose-400" />
-                    </div>
+                  <div className="mt-4 rounded-full bg-[#E8F1FF] px-4 py-1 text-xs font-bold text-[#3B5BDB]">
+                    AI Study Buddy active 🤖
                   </div>
-                </div>
-
-                <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                  <div className="rounded-2xl bg-white/5 p-3">
-                    <p className="text-xs text-slate-400">Focus</p>
-                    <p className="mt-1 font-semibold text-white">Early action</p>
-                  </div>
-                  <div className="rounded-2xl bg-white/5 p-3">
-                    <p className="text-xs text-slate-400">Mood</p>
-                    <p className="mt-1 font-semibold text-white">Friendly</p>
-                  </div>
-                  <div className="rounded-2xl bg-white/5 p-3">
-                    <p className="text-xs text-slate-400">Result</p>
-                    <p className="mt-1 font-semibold text-white">Predictable</p>
-                  </div>
+                  <p className="mt-2 text-xs font-semibold text-gray-400">Analyzing study trends...</p>
                 </div>
               </div>
             </div>
-          </Card>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-5 py-4 sm:px-8">
-        <div className="grid gap-4 md:grid-cols-3">
-          <Card className="p-5">
-            <h3 className="text-lg font-bold text-slate-900">Spot concerns early</h3>
-            <p className="mt-2 text-sm leading-7 text-slate-600">
-              See at-risk students before grades drop and support them sooner.
-            </p>
-          </Card>
-          <Card className="p-5">
-            <h3 className="text-lg font-bold text-slate-900">Make guidance simple</h3>
-            <p className="mt-2 text-sm leading-7 text-slate-600">
-              Clean cards and clear predictions help teachers act with confidence.
-            </p>
-          </Card>
-          <Card className="p-5">
-            <h3 className="text-lg font-bold text-slate-900">Keep students supported</h3>
-            <p className="mt-2 text-sm leading-7 text-slate-600">
-              Friendly visuals and short summaries keep the experience light and useful.
-            </p>
-          </Card>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-7xl px-5 py-4 sm:px-8">
-        <div className="grid gap-4 rounded-[2rem] bg-white/75 p-6 shadow-xl shadow-slate-200/40 backdrop-blur md:grid-cols-3">
-          <div>
-            <p className="text-sm font-medium uppercase tracking-[0.25em] text-slate-500">Simple flow</p>
-            <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900">How it works</h2>
           </div>
-          <div className="rounded-2xl bg-slate-50 p-4">
-            <p className="text-sm font-medium text-indigo-600">1. Add students</p>
-            <p className="mt-2 text-sm leading-7 text-slate-600">Create or edit a student record in seconds.</p>
-          </div>
-          <div className="rounded-2xl bg-slate-50 p-4">
-            <p className="text-sm font-medium text-indigo-600">2. Predict clearly</p>
-            <p className="mt-2 text-sm leading-7 text-slate-600">Open prediction from that student’s profile.</p>
-          </div>
-        </div>
-      </section>
+        </header>
 
-      <FooterBar />
-    </div>
-  );
-};
+        <section id="features" className="border-y border-[#C7DAF7] bg-[#F4F9FF] py-20">
+          <div className="mx-auto max-w-7xl px-6">
+            <div className="mb-16 space-y-3 text-center">
+              <h2 className="text-3xl font-black text-[#1E293B]">Cool Platform Features</h2>
+              <p className="font-medium text-[#6366F1]">Everything you need to step up your academic game plan.</p>
+            </div>
 
-export default Home;
+            <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                { title: 'Student Analytics', desc: 'Track stats, logs, and progress bars like your favorite RPG dashboard.', icon: <BarChart2 className="h-6 w-6" />, badge: 'Level up', iconBg: 'bg-amber-100', iconColor: 'text-amber-500' },
+                { title: 'AI Prediction', desc: 'Our smart algorithms accurately forecast grades and future roadblocks.', icon: <Cpu className="h-6 w-6" />, badge: 'Smart AI', iconBg: 'bg-cyan-100', iconColor: 'text-cyan-600' },
+                { title: 'Performance Dashboard', desc: 'Clean visual heatmaps and charts built for effortless tracking.', icon: <LineChart className="h-6 w-6" />, badge: 'Quest Log', iconBg: 'bg-violet-100', iconColor: 'text-violet-600' },
+                { title: 'Fast & Accurate Results', desc: 'Instant analytics calculated in real-time right when you need them.', icon: <Zap className="h-6 w-6" />, badge: 'Max Speed', iconBg: 'bg-emerald-100', iconColor: 'text-emerald-600' },
+              ].map((feat, idx) => (
+                <div key={idx} className="group relative rounded-2xl border-2 border-[#C7DAF7] bg-[#EDF4FF] p-6 transition-all duration-300 hover:-translate-y-2 hover:border-[#4F46E5] hover:bg-[#F8FBFF] hover:shadow-xl">
+                  <span className="absolute -top-3 right-4 rounded-full bg-[#10B981] px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-white">
+                    {feat.badge}
+                  </span>
+                  <div className={`mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl transition-colors group-hover:bg-[#4F46E5] group-hover:text-white ${feat.iconBg} ${feat.iconColor}`}>
+                    {feat.icon}
+                  </div>
+                  <h3 className="mb-2 text-lg font-bold text-[#1E293B]">{feat.title}</h3>
+                  <p className="text-sm leading-relaxed text-gray-500">{feat.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-[#EEF6FF] py-20">
+          <div className="mx-auto max-w-7xl px-6">
+            <div className="mb-16 space-y-3 text-center">
+              <h2 className="text-3xl font-black text-[#1E293B]">How It Works</h2>
+              <p className="font-medium text-[#6366F1]">Three easy steps to unlock predictive recommendations.</p>
+            </div>
+
+            <div className="grid gap-8 md:grid-cols-3">
+              {[
+                { step: '01', title: 'Add Student Data', desc: 'Securely input assignments, test scores, or study habits.', icon: <UserPlus className="h-7 w-7" />, iconBg: 'bg-sky-100', iconColor: 'text-sky-600' },
+                { step: '02', title: 'AI Model Analyzes', desc: 'Our machine learning systems process stats to find patterns.', icon: <Search className="h-7 w-7" />, iconBg: 'bg-fuchsia-100', iconColor: 'text-fuchsia-600' },
+                { step: '03', title: 'View Predictions', desc: 'Get highly accurate score outputs and custom-tailored feedback.', icon: <CheckCircle className="h-7 w-7" />, iconBg: 'bg-emerald-100', iconColor: 'text-emerald-600' },
+              ].map((item, idx) => (
+                <div key={idx} className="relative flex flex-col items-center rounded-2xl border border-[#C7DAF7] bg-[#F8FBFF] p-6 text-center shadow-sm transition-shadow hover:shadow-md">
+                  <span className="absolute left-4 top-4 text-3xl font-black text-[#6366F1]/20">{item.step}</span>
+                  <div className={`mb-4 flex h-16 w-16 items-center justify-center rounded-2xl ${item.iconBg} ${item.iconColor}`}>
+                    {item.icon}
+                  </div>
+                  <h3 className="mb-2 text-xl font-bold text-[#1E293B]">{item.title}</h3>
+                  <p className="text-sm leading-relaxed text-gray-500">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="border-t border-[#C7DAF7] bg-[#F4F9FF] py-20">
+          <div className="mx-auto max-w-7xl px-6">
+            <div className="mb-16 space-y-3 text-center">
+              <h2 className="text-3xl font-black text-[#1E293B]">Why Use Learn Lens?</h2>
+              <p className="font-medium text-[#6366F1]">Achieve more with smarter, more proactive insights built into your workflow.</p>
+            </div>
+
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                { title: 'Early Identification of At-Risk Students', color: 'border-l-[#EF4444]', icon: <ShieldAlert className="text-[#EF4444]" /> },
+                { title: 'Improved Academic Decision-Making', color: 'border-l-[#4F46E5]', icon: <Lightbulb className="text-[#4F46E5]" /> },
+                { title: 'Data-Driven Insights & Metrics', color: 'border-l-[#10B981]', icon: <BarChart2 className="text-[#10B981]" /> },
+                { title: 'Easy-to-use Web Interface', color: 'border-l-[#F59E0B]', icon: <Layers className="text-[#F59E0B]" /> },
+              ].map((benefit, idx) => (
+                <div key={idx} className={`flex items-center gap-4 rounded-xl border border-[#C7DAF7] border-l-4 ${benefit.color} bg-[#EDF4FF] p-5 shadow-sm transition-shadow hover:shadow-md`}>
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#F8FBFF] shadow-sm">
+                    {benefit.icon}
+                  </div>
+                  <h4 className="text-sm font-bold leading-snug text-[#1E293B]">{benefit.title}</h4>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <footer className="mt-12 border-t border-[#C7DAF7] bg-[#F8FBFF] py-12 text-sm text-gray-500">
+          <div className="mx-auto grid max-w-7xl gap-8 px-6 sm:grid-cols-2 md:grid-cols-4">
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#4F46E5] text-white">
+                  <Smile className="h-5 w-5 transform rotate-12" />
+                </div>
+                <span className="text-base font-bold text-[#1E293B]">LearnLens</span>
+              </div>
+              <p className="text-xs font-medium text-gray-400">Making data analytics fun, interactive, and completely clear for student development.</p>
+            </div>
+            <div>
+              <h5 className="mb-3 font-bold text-[#1E293B]">Quick Links</h5>
+              <ul className="space-y-2 text-xs font-semibold">
+                <li><a href="#" className="hover:text-[#4F46E5]">Home</a></li>
+                <li><a href="#" className="hover:text-[#4F46E5]">Features</a></li>
+                <li><a href="#" className="hover:text-[#4F46E5]">Predictions</a></li>
+              </ul>
+            </div>
+            <div>
+              <h5 className="mb-3 font-bold text-[#1E293B]">Contact Us</h5>
+              <ul className="space-y-2 text-xs font-semibold">
+                <li>support@learnlens.io</li>
+                <li>+1 (555) 019-2834</li>
+              </ul>
+            </div>
+            <div>
+              <h5 className="mb-3 font-bold text-[#1E293B]">Copyright</h5>
+              <p className="text-xs font-semibold">&copy; {new Date().getFullYear()} Learn Lens Inc. All rights reserved.</p>
+            </div>
+          </div>
+        </footer>
+      </div>
+    );
+  };
+
+  export default Home;
