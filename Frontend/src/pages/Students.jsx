@@ -1,8 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import Card from "../components/Card";
 import Button from "../components/Button";
+import {
+  createStudent,
+  deleteStudent,
+  fetchStudents,
+  updateStudent,
+} from "../services/api";
 
 
 const emptyStudent = {
@@ -17,9 +22,9 @@ const Students = () => {
   const [students, setStudents] = useState([]);
 
   useEffect(() => {
-    const fetchStudents = async () => {
+    const loadStudents = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/students");
+        const res = await fetchStudents();
         // backend returns Mongo docs with _id; map to id
         setStudents(
           (res.data ?? []).map((s) => ({
@@ -36,7 +41,7 @@ const Students = () => {
       }
     };
 
-    fetchStudents();
+    loadStudents();
   }, []);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
@@ -90,10 +95,7 @@ const Students = () => {
 
     try {
       if (editingStudent) {
-        const res = await axios.put(
-          `http://localhost:5000/api/students/${editingStudent.id}`,
-          payload,
-        );
+        const res = await updateStudent(editingStudent.id, payload);
         setStudents((cur) =>
           cur.map((s) => (s.id === editingStudent.id ? mapStudent(res.data) : s)),
         );
@@ -102,10 +104,7 @@ const Students = () => {
           navigate("/prediction", { state: { student: { ...mapStudent(res.data) } } });
         }
       } else {
-        const res = await axios.post(
-          "http://localhost:5000/api/students",
-          payload,
-        );
+        const res = await createStudent(payload);
         const created = mapStudent(res.data);
         setStudents((cur) => [...cur, created]);
 
@@ -131,7 +130,7 @@ const Students = () => {
 
   const handleDeleteStudent = async (studentId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/students/${studentId}`);
+      await deleteStudent(studentId);
       setStudents((cur) => cur.filter((s) => s.id !== studentId));
     } catch (e) {
       console.error("Delete failed", e);

@@ -1,70 +1,78 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { FaGraduationCap } from "react-icons/fa";
 
 const Navbar = () => {
   return (
-    <nav className="w-full border-b border-white/70 bg-white/80 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
+    <nav className="w-full bg-white shadow-sm sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
+        {/* Logo */}
         <Link to="/" className="flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-600 to-cyan-500 text-lg font-bold text-white shadow-lg shadow-indigo-200">
-            LL
+
+          <div className="bg-indigo-600 p-3 rounded-xl text-white text-2xl">
+            <FaGraduationCap />
           </div>
+
           <div>
-            <p className="text-lg font-semibold tracking-tight text-slate-900">
+            <h1 className="text-2xl font-bold text-slate-800">
               Learn <span className="text-indigo-600">Lens</span>
+            </h1>
+
+            <p className="text-sm text-gray-500">
+              AI-Powered Education
             </p>
-            <p className="text-xs text-slate-500">Student performance intelligence</p>
           </div>
+
         </Link>
 
-        <div className="hidden items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2 shadow-sm md:flex">
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              `rounded-full px-4 py-2 text-sm font-medium transition ${
-                isActive ? "bg-indigo-600 text-white" : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-              }`
-            }
-          >
-            Home
-          </NavLink>
-          <NavLink
-            to="/dashboard"
-            className={({ isActive }) =>
-              `rounded-full px-4 py-2 text-sm font-medium transition ${
-                isActive ? "bg-indigo-600 text-white" : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-              }`
-            }
-          >
-            Dashboard
-          </NavLink>
-          <NavLink
-            to="/students"
-            className={({ isActive }) =>
-              `rounded-full px-4 py-2 text-sm font-medium transition ${
-                isActive ? "bg-indigo-600 text-white" : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-              }`
-            }
-          >
-            Students
-          </NavLink>
-          <NavLink
-            to="/prediction"
-            className={({ isActive }) =>
-              `rounded-full px-4 py-2 text-sm font-medium transition ${
-                isActive ? "bg-indigo-600 text-white" : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-              }`
-            }
-          >
-            Prediction
-          </NavLink>
-          <Link
-            to="/login"
-            className="ml-2 rounded-full border border-indigo-200 bg-white px-5 py-2 text-sm font-semibold text-indigo-700 shadow-sm transition hover:-translate-y-0.5 hover:bg-indigo-50"
-          >
-            Login
-          </Link>
-        </div>
+        {/* Navigation */}
+        <ul className="hidden md:flex items-center gap-8 font-medium text-slate-700">
+
+          <li>
+            <Link
+              to="/"
+              className="hover:text-indigo-600 transition"
+            >
+              Home
+            </Link>
+          </li>
+
+          <li>
+            <Link
+              to="/students"
+              className="hover:text-indigo-600 transition"
+            >
+              Students
+            </Link>
+          </li>
+
+          <li>
+            <Link
+              to="/prediction"
+              className="hover:text-indigo-600 transition"
+            >
+              Prediction
+            </Link>
+          </li>
+
+          <li>
+            <Link
+              to="/dashboard"
+              className="hover:text-indigo-600 transition"
+            >
+              Dashboard
+            </Link>
+          </li>
+
+        </ul>
+
+        {/* Button */}
+        <Link
+          to="/login"
+          className="bg-indigo-200 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-semibold transition"
+        >
+          Login
+        </Link>
 
       </div>
     </nav>

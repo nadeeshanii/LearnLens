@@ -16,19 +16,19 @@ const AppRoutes = () => {
 
       <Routes>
 
-        <Route path="/" element={<Home />} />
-
         <Route path="/login" element={<Login />} />
 
         <Route element={<AppShell />}>
+          <Route path="/" element={<Home />} />
 
           <Route path="/dashboard" element={<Dashboard />} />
 
           <Route path="/students" element={<Students />} />
 
           <Route path="/prediction" element={<Prediction />} />
-
         </Route>
+
+
 
         <Route path="*" element={<Navigate to="/" replace />} />
 

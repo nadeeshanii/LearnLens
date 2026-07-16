@@ -1,8 +1,10 @@
 # TODO
 
-- [ ] Add grade indicator icons (Excellent/Good/Needs Support) in Prediction result UI.
-- [ ] Add same grade indicator near each student row grade in Students table.
-- [ ] Ensure indicator colors match: Excellent = green, Good = yellow, Needs Support = red.
-- [ ] Keep changes compatible with existing Tailwind styling.
-- [ ] Verify app builds/runs (frontend Vite) and manually sanity-check UI.
+## Fix Home page missing features/sections/footer
+
+- [x] Update `frontend/src/routes/AppRoutes.jsx` so the `/` route is wrapped with `AppShell`.
+- [ ] Ensure `frontend/src/pages/Home.jsx` still renders `Navbar` + `HeroSection` (or remove Navbar if duplicate with AppShell header is desired).
+- [ ] Add any missing “features/other” sections into Home if they are not already present.
+- [x] Run frontend build to verify routing and footer visibility.
+
 

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import Card from "../components/Card";
 import Button from "../components/Button";
+import { predictStudent } from "../services/api";
 
 const Prediction = () => {
   const location = useLocation();
@@ -48,36 +49,37 @@ const Prediction = () => {
     );
   }
 
-  const handlePrediction = () => {
-    const attendance = Number(formData.attendance || 0);
-    const studyHours = Number(formData.studyHours || 0);
-    const assignmentScore = Number(formData.assignmentScore || 0);
-    const previousGrade = Number(formData.previousGrade || 0);
+  const handlePrediction = async () => {
+    try {
+      const response = await predictStudent({
+        attendance: Number(formData.attendance || 0),
+        studyHours: Number(formData.studyHours || 0),
+        assignmentScore: Number(formData.assignmentScore || 0),
+        previousGrade: Number(formData.previousGrade || 0),
+      });
 
-    const score = Math.round(
-      attendance * 0.28 + studyHours * 6 + assignmentScore * 0.22 + previousGrade * 0.28,
-    );
-    const grade = Math.max(35, Math.min(98, score));
-    const level =
-      grade >= 80
-        ? "Excellent Performance"
-        : grade >= 65
-          ? "Good Performance"
-          : "Needs Support";
-    const confidence = `${Math.min(99, Math.max(72, grade + 12))}%`;
-    const recommendation =
-      grade >= 80
-        ? "Student is performing well. Keep the current learning path and revisit weekly."
-        : grade >= 65
-          ? "Student is doing well, but regular progress checks will improve consistency."
-          : "Student needs support. Focus on attendance, guided practice, and quick interventions.";
+      const performanceLevel = response.data.performanceLevel;
+      const recommendation =
+        performanceLevel === "Excellent"
+          ? "Student is performing well. Keep the current learning path and revisit weekly."
+          : performanceLevel === "Average"
+            ? "Student is doing well, but regular progress checks will improve consistency."
+            : "Student needs support. Focus on attendance, guided practice, and quick interventions.";
 
-    setResult({
-      grade: `${grade}%`,
-      level,
-      confidence,
-      recommendation,
-    });
+      setResult({
+        grade: `${response.data.predictedGrade}%`,
+        level: performanceLevel,
+        confidence:
+          performanceLevel === "Excellent"
+            ? "90%+"
+            : performanceLevel === "Average"
+              ? "80%+"
+              : "70%+",
+        recommendation,
+      });
+    } catch (error) {
+      console.error("Prediction failed", error);
+    }
   };
 
   return (
@@ -161,9 +163,9 @@ const Prediction = () => {
                   </div>
 
                   <div className="flex items-center justify-end gap-3">
-                    {result.level === "Excellent Performance" ? (
+                    {result.level === "Excellent" ? (
                       <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-emerald-50 text-2xl">✅</span>
-                    ) : result.level === "Good Performance" ? (
+                    ) : result.level === "Average" ? (
                       <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-yellow-50 text-2xl">🟡</span>
                     ) : (
                       <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-rose-50 text-2xl">❌</span>
@@ -173,9 +175,9 @@ const Prediction = () => {
                       <p className="text-slate-500">Performance Level</p>
                       <p
                         className={
-                          result.level === "Excellent Performance"
+                          result.level === "Excellent"
                             ? "font-semibold text-emerald-700"
-                            : result.level === "Good Performance"
+                            : result.level === "Average"
                               ? "font-semibold text-yellow-700"
                               : "font-semibold text-rose-700"
                         }
