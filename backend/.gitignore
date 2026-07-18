@@ -1,6 +1,16 @@
+# MongoDB local database
+backend/data/db/
+backend/data/
+*.log
+
+# Dependencies
 node_modules/
+venv/
 .env
+
+# Python cache
 __pycache__/
 *.pyc
-model.pkl
-scaler.pkl
+
+# VS Code
+.vscode/

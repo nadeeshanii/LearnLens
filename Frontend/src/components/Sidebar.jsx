@@ -11,7 +11,7 @@ const Sidebar = () => {
 		<aside className="hidden min-h-screen w-60 border-r border-white/70 bg-slate-950 px-4 py-6 text-white lg:flex lg:flex-col">
 			<Link to="/dashboard" className="mb-8 flex items-center gap-3 rounded-3xl bg-white/5 px-4 py-4 transition hover:bg-white/10">
 				<div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-cyan-400 text-lg font-bold text-white shadow-lg shadow-indigo-900/30">
-					LL
+
 				</div>
 				<div>
 					<p className="text-lg font-semibold">Learn Lens</p>
@@ -25,8 +25,7 @@ const Sidebar = () => {
 						key={link.to}
 						to={link.to}
 						className={({ isActive }) =>
-							`flex items-center rounded-2xl px-4 py-3 text-sm font-medium transition ${
-								isActive ? "bg-indigo-500 text-white shadow-lg shadow-indigo-900/30" : "text-slate-300 hover:bg-white/8 hover:text-white"
+							`flex items-center rounded-2xl px-4 py-3 text-sm font-medium transition ${isActive ? "bg-indigo-500 text-white shadow-lg shadow-indigo-900/30" : "text-slate-300 hover:bg-white/8 hover:text-white"
 							}`
 						}
 					>
