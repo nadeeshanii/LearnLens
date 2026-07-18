@@ -8,15 +8,15 @@ const Dashboard = () => {
     <div className="grid gap-6">
 
 
-        <div className="flex flex-col gap-4 rounded-3xl bg-white/85 p-6 shadow-xl shadow-slate-200/60 backdrop-blur lg:flex-row lg:items-end lg:justify-between">
+        <div className="flex flex-col gap-3 rounded-3xl bg-white/85 px-6 py-4 shadow-xl shadow-slate-200/60 backdrop-blur lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <p className="text-sm font-medium uppercase tracking-[0.25em] text-slate-500">
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-500">
               Overview
             </p>
-            <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-900">
+            <h1 className="mt-1 text-2xl font-bold tracking-tight text-slate-900">
               Dashboard
             </h1>
-            <p className="mt-2 text-slate-500">
+            <p className="mt-1 text-sm text-slate-500">
               Monitor student performance and AI predictions.
             </p>
           </div>

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
   FaPlayCircle,
   FaChartLine,
@@ -34,13 +35,13 @@ const HeroSection = () => {
 
           <div className="flex flex-wrap gap-5 mt-10">
 
-            <button className="bg-sky-600 hover:bg-sky-700 text-white px-8 py-4 rounded-xl flex items-center gap-3 font-semibold transition shadow-lg shadow-sky-200">
+            <Link to="/dashboard" className="bg-sky-600 hover:bg-sky-700 text-white px-8 py-4 rounded-xl flex items-center gap-3 font-semibold transition shadow-lg shadow-sky-200">
 
            
 
               Get Started
 
-            </button>
+            </Link>
 
             <button className="bg-sky-50 border border-sky-200 px-8 py-4 rounded-xl flex items-center gap-3 font-semibold shadow-sm hover:border-sky-400 hover:bg-sky-100 transition">
 

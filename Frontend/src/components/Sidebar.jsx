@@ -8,7 +8,7 @@ const links = [
 
 const Sidebar = () => {
 	return (
-		<aside className="hidden min-h-screen w-72 border-r border-white/70 bg-slate-950 px-5 py-6 text-white lg:flex lg:flex-col">
+		<aside className="hidden min-h-screen w-60 border-r border-white/70 bg-slate-950 px-4 py-6 text-white lg:flex lg:flex-col">
 			<Link to="/dashboard" className="mb-8 flex items-center gap-3 rounded-3xl bg-white/5 px-4 py-4 transition hover:bg-white/10">
 				<div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-cyan-400 text-lg font-bold text-white shadow-lg shadow-indigo-900/30">
 					LL
@@ -35,7 +35,7 @@ const Sidebar = () => {
 				))}
 			</nav>
 
-			<div className="mt-auto rounded-3xl bg-gradient-to-br from-indigo-500 to-cyan-500 p-5 text-white shadow-xl shadow-indigo-900/30">
+			<div className="mt-auto rounded-3xl bg-gradient-to-br from-indigo-500 to-cyan-500 p-4 text-white shadow-xl shadow-indigo-900/30">
 				<p className="text-sm font-medium uppercase tracking-[0.25em] text-white/80">Live insights</p>
 				<p className="mt-2 text-lg font-semibold leading-snug">Track students, predict outcomes, and act earlier.</p>
 			</div>
