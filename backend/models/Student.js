@@ -36,7 +36,11 @@ const studentSchema = new mongoose.Schema(
     performanceLevel: {
         type: String,
         default: null
-    }
+    },
+
+    recommendations: [{
+        type: String
+    }]
 
 },
 {

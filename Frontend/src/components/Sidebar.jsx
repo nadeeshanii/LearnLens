@@ -3,7 +3,6 @@ import { Link, NavLink } from "react-router-dom";
 const links = [
 	{ to: "/dashboard", label: "Dashboard" },
 	{ to: "/students", label: "Students" },
-	{ to: "/prediction", label: "Prediction" },
 ];
 
 const Sidebar = () => {
@@ -26,8 +25,7 @@ const Sidebar = () => {
 						to={link.to}
 						className={({ isActive }) =>
 							`flex items-center rounded-2xl px-4 py-3 text-sm font-medium transition ${isActive ? "bg-indigo-500 text-white shadow-lg shadow-indigo-900/30" : "text-slate-300 hover:bg-white/8 hover:text-white"
-							}`
-						}
+							}`}
 					>
 						{link.label}
 					</NavLink>
@@ -43,3 +41,4 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+

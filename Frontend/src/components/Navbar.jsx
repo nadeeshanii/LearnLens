@@ -48,15 +48,6 @@ const Navbar = () => {
 
           <li>
             <Link
-              to="/prediction"
-              className="hover:text-indigo-600 transition"
-            >
-              Prediction
-            </Link>
-          </li>
-
-          <li>
-            <Link
               to="/dashboard"
               className="hover:text-indigo-600 transition"
             >

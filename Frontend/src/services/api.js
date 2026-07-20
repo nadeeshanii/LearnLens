@@ -14,5 +14,6 @@ export const updateStudent = (studentId, payload) =>
 export const deleteStudent = (studentId) => api.delete(`/students/${studentId}`);
 
 export const predictStudent = (payload) => api.post("/predict", payload);
+export const batchPredictAll = () => api.post("/predict/batch");
 
 export default api;

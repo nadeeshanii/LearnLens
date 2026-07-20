@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import Card from "../components/Card";
 import Button from "../components/Button";
+import StudentPredictPopup from "../components/StudentPredictPopup";
 import {
   createStudent,
   deleteStudent,
@@ -18,14 +18,21 @@ const emptyStudent = {
 };
 
 const Students = () => {
-  const navigate = useNavigate();
   const [students, setStudents] = useState([]);
+  const [predictionStudent, setPredictionStudent] = useState(null);
+
+  const openPredictionPopup = (student) => {
+    setPredictionStudent(student);
+  };
+
+  const closePredictionPopup = () => {
+    setPredictionStudent(null);
+  };
 
   useEffect(() => {
     const loadStudents = async () => {
       try {
         const res = await fetchStudents();
-        // backend returns Mongo docs with _id; map to id
         setStudents(
           (res.data ?? []).map((s) => ({
             id: s._id ?? s.id,
@@ -33,16 +40,19 @@ const Students = () => {
             attendance: String(s.attendance ?? ""),
             studyHours: String(s.studyHours ?? ""),
             grade: String(s.assignmentScore ?? s.grade ?? ""),
+            predictedGrade: String(s.predictedGrade ?? ""),
+            performanceLevel: s.performanceLevel ?? "Average",
+            recommendations: s.recommendations ?? [],
           })),
         );
       } catch (e) {
-        // fallback: keep empty list
         console.error("Failed to load students", e);
       }
     };
 
     loadStudents();
   }, []);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState(emptyStudent);
@@ -75,7 +85,7 @@ const Students = () => {
     setFormData(emptyStudent);
   };
 
-  const handleSaveStudent = async (event, action = "save") => {
+  const handleSaveStudent = async (event) => {
     event.preventDefault();
 
     const name = formData.name.trim();
@@ -99,18 +109,11 @@ const Students = () => {
         setStudents((cur) =>
           cur.map((s) => (s.id === editingStudent.id ? mapStudent(res.data) : s)),
         );
-
-        if (action === "predict") {
-          navigate("/prediction", { state: { student: { ...mapStudent(res.data) } } });
-        }
       } else {
         const res = await createStudent(payload);
         const created = mapStudent(res.data);
         setStudents((cur) => [...cur, created]);
-
-        if (action === "predict") {
-          navigate("/prediction", { state: { student: created } });
-        }
+        setPredictionStudent(created);
       }
     } catch (e) {
       console.error("Save failed", e);
@@ -126,6 +129,9 @@ const Students = () => {
     attendance: String(doc.attendance ?? ""),
     studyHours: String(doc.studyHours ?? ""),
     grade: String(doc.assignmentScore ?? doc.grade ?? ""),
+    predictedGrade: String(doc.predictedGrade ?? ""),
+    performanceLevel: doc.performanceLevel ?? "Average",
+    recommendations: doc.recommendations ?? [],
   });
 
   const handleDeleteStudent = async (studentId) => {
@@ -135,10 +141,6 @@ const Students = () => {
     } catch (e) {
       console.error("Delete failed", e);
     }
-  };
-
-  const handlePredictStudent = (student) => {
-    navigate("/prediction", { state: { student } });
   };
 
   return (
@@ -155,14 +157,14 @@ const Students = () => {
             Manage student information, edit records, and predict by student.
           </p>
         </div>
-        <Button text="+ Add Student" onClick={openAddModal} />
+        <Button text="+ Add & Predict" onClick={openAddModal} />
       </div>
 
       <Card className="p-0">
         <div className="border-b border-slate-100 px-6 py-5">
           <h2 className="text-xl font-bold text-slate-900">Student table</h2>
           <p className="mt-1 text-sm text-slate-500">
-            Use Predict to open the prediction page for a specific student.
+            Manage your student records.
           </p>
         </div>
 
@@ -181,7 +183,15 @@ const Students = () => {
             <tbody>
               {students.map((student) => (
                 <tr key={student.id} className="border-b border-slate-100">
-                  <td className="py-4 font-medium text-slate-900">{student.name}</td>
+                  <td className="py-4">
+                    <button
+                      type="button"
+                      onClick={() => openPredictionPopup(student)}
+                      className="font-medium text-indigo-600 underline-offset-2 transition hover:text-indigo-800 hover:underline"
+                    >
+                      {student.name}
+                    </button>
+                  </td>
                   <td>{student.attendance}%</td>
                   <td>{student.studyHours} hrs</td>
                   <td className="whitespace-nowrap">
@@ -202,8 +212,8 @@ const Students = () => {
                     <div className="flex flex-wrap gap-2">
                       <Button
                         text="Predict"
-                        onClick={() => handlePredictStudent(student)}
-                        variant="secondary"
+                        onClick={() => openPredictionPopup(student)}
+                        variant="primary"
                         className="px-4 py-2"
                       />
                       <Button
@@ -248,98 +258,56 @@ const Students = () => {
               </button>
             </div>
 
-            <form className="grid gap-4" onSubmit={(event) => handleSaveStudent(event, "save")}>
-              <div className="grid gap-4 sm:grid-cols-2">
+            <form className="grid gap-4" onSubmit={handleSaveStudent}>
+              <div className="grid gap-4">
+                <input
+                  type="text"
+                  placeholder="Student name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
+                />
 
-                <div className="grid gap-4">
-                  <div>
-                    <p className="mb-1 text-sm font-medium text-slate-600">Student name</p>
-                  </div>
-                  <div>
-                    <p className="mb-1 text-sm font-medium text-slate-600">Attendance</p>
-                    <p className="text-xs text-slate-500">( % )</p>
-                  </div>
-                  <div>
-                    <p className="mb-1 text-sm font-medium text-slate-600">Study hours</p>
-                  </div>
-                  <div>
-                    <p className="mb-1 text-sm font-medium text-slate-600">Assignment score</p>
-                    <p className="text-xs text-slate-500">( % )</p>
-                  </div>
-                </div>
-
-                <div className="grid gap-4">
-                  <input
-                    type="text"
-                    placeholder="Student name"
-                    value={formData.name}
-                    onChange={(event) => setFormData({ ...formData, name: event.target.value })}
-                    className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
-                  />
-
-                  <input
-                    type="number"
-                    placeholder="Attendance - 96"
-                    value={formData.attendance}
-                    onChange={(event) => setFormData({ ...formData, attendance: event.target.value })}
-                    className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
-                  />
-
-                  <input
-                    type="number"
-                    placeholder="Study hour - 6"
-                    value={formData.studyHours}
-                    onChange={(event) => setFormData({ ...formData, studyHours: event.target.value })}
-                    className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
-                  />
-
-                  <input
-                    type="number"
-                    placeholder="Assignment score - 92"
-                    value={formData.grade}
-                    onChange={(event) => setFormData({ ...formData, grade: event.target.value })}
-                    className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
-                  />
-                </div>
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-3">
                 <input
                   type="number"
-                  placeholder="Attendance %"
+                  placeholder="Attendance (%) - e.g. 96"
                   value={formData.attendance}
-                  onChange={(event) => setFormData({ ...formData, attendance: event.target.value })}
+                  onChange={(e) => setFormData({ ...formData, attendance: e.target.value })}
                   className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
                 />
+
                 <input
                   type="number"
-                  placeholder="Study hours"
+                  placeholder="Study hours per day - e.g. 6"
                   value={formData.studyHours}
-                  onChange={(event) => setFormData({ ...formData, studyHours: event.target.value })}
+                  onChange={(e) => setFormData({ ...formData, studyHours: e.target.value })}
                   className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
                 />
+
                 <input
                   type="number"
-                  placeholder="Grade %"
+                  placeholder="Assignment score (%) - e.g. 92"
                   value={formData.grade}
-                  onChange={(event) => setFormData({ ...formData, grade: event.target.value })}
+                  onChange={(e) => setFormData({ ...formData, grade: e.target.value })}
                   className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-indigo-400 focus:ring-4 focus:ring-indigo-100"
                 />
               </div>
 
               <div className="flex flex-wrap justify-end gap-3 pt-2">
                 <Button text="Cancel" onClick={closeModal} variant="secondary" />
-                <Button
-                  text={editingStudent ? "Save & Predict" : "Add & Predict"}
-                  onClick={(event) => handleSaveStudent(event, "predict")}
-                  variant="secondary"
-                />
                 <Button text={editingStudent ? "Save Changes" : "Add Student"} type="submit" />
               </div>
             </form>
           </div>
         </div>
       ) : null}
+
+      {predictionStudent && (
+        <StudentPredictPopup
+          student={predictionStudent}
+          onClose={closePredictionPopup}
+        />
+      )}
     </div>
   );
 };

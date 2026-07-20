@@ -1,10 +1,14 @@
-# TODO
+# TODO: Student Prediction Popup Feature
 
-## Fix Home page missing features/sections/footer
+## Steps
 
-- [x] Update `frontend/src/routes/AppRoutes.jsx` so the `/` route is wrapped with `AppShell`.
-- [ ] Ensure `frontend/src/pages/Home.jsx` still renders `Navbar` + `HeroSection` (or remove Navbar if duplicate with AppShell header is desired).
-- [ ] Add any missing “features/other” sections into Home if they are not already present.
-- [x] Run frontend build to verify routing and footer visibility.
-
+- [x] 1. Create `StudentPredictPopup.jsx` component
+- [x] 2. Update `Students.jsx`:
+  - [x] Map prediction fields from API response (`predictedGrade`, `performanceLevel`, `recommendations`)
+  - [x] Add `predictionStudent` state for popup
+  - [x] Add `Predict` button to actions column
+  - [x] Make student name clickable to open popup
+  - [x] Auto-show popup after "Add & Predict"
+  - [x] Rename button text to "Add & Predict"
+- [x] 3. Popup shows: student summary, predicted grade, performance level, performance trend, and tips to improve
 
